@@ -17,7 +17,7 @@ function App() {
     
 
     setLoading(true);
-    const {request , cancel } = userService.getAllUsers();
+    const {request , cancel } = userService.getAll<User>();
       request.then((res) => {
         setUsers(res.data);
         console.log(res.data); // Check if data is being logged
@@ -44,7 +44,7 @@ function App() {
     const originalUsers = [...users];
     setUsers(users.filter((u) => u.id !== user.id));
 
-    userService.deleteUser(user.id)
+    userService.delete(user.id)
       .catch((err) => {
         setError(err.message);
         setUsers(originalUsers);
@@ -60,7 +60,7 @@ function App() {
 
     const newUser = { id: 0, name: newUserName };
 
-    userService.createUser(newUser)
+    userService.create(newUser)
       .then((res) => {
         setUsers((prevUsers) => [res.data, ...prevUsers]);
         setNewUserName(""); // Clear the input field
@@ -79,7 +79,7 @@ function App() {
     const updatedUser = { ...user , name: user.name + '!'};
     setUsers(users.map(u => u.id === user.id ? updatedUser : u));
 
-    userService.updateUser(updatedUser)
+    userService.update(updatedUser)
     .catch( err => {
       setError(err.message);
       setUsers(originalUsers);
